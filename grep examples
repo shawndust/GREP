@@ -1,0 +1,80 @@
+#These grep statements perform a variety of functions to retrieve
+#specific lines or words based on criteria such as length or ending.
+
+function grepit () {
+words1=/usr/share/dict/words
+words2=~user_dir/Data/filename
+
+# Find any words with a digit in them.
+grep "[0-9]" $words1 $words2 > gout.01
+cat gout.01
+
+# Find any words with three consequetive letters repeated next to the 1st three.
+grep -E "([a-z][a-z][a-z])\1{1}" $words1 $words2 > gout.08
+cat gout.08
+
+# Find any words with duplicate letters next to each other.
+grep -E "([a-zA-Z])\1{1}" $words1 $words2 > gout.14
+cat gout.14
+
+# Find any words with letter pair ch or sl in them.
+grep  "ch\|sl" $words1 $words2 > gout.16
+cat gout.16
+
+# Find any words longer than 8 characters.
+grep  "........" $words1 $words2 > gout.19
+cat gout.19
+
+# Find any lines with exactly 6 characters.
+grep  "^......$" $words1 $words2 > gout.20
+cat gout.20
+
+# Find any words with exactly 2 characters.
+# Grep searches til the end of the line.
+##grep  "^..$" $words1 $words2 > gout.22
+#cat gout.22
+
+
+# Find any words with 1st letter capitalized.
+# The grep examines only the first letter and disregards the rest.
+grep  "^[A-Z]" $words1 $words2 > gout.23
+cat gout.23
+
+# Find any word ending with a d.
+# Note: this is distinct from lines ending with a d.
+grep  "d\>" $words1 $words2 > gout.31
+cat gout.31
+
+# Find any word ending with a d but not the 'line'.
+# Note, lines ending with d are distinct from words ending with d.
+grep -E 'd\>.*[^d]$' $words1 $words2 > gout.32
+cat gout.32
+
+# Find any word ending with an s but the line ending with something else.
+grep -E 's\>.*[^s]$' $words1 $words2 > gout.35
+cat gout.35
+
+# Find any words containing an apostrophe followed by 5 or more characters.
+grep  "'....." $words1 $words2 > gout.38
+cat gout.38
+
+# Find any 'lines' longer than 8 characters.
+grep -E '........$' $words1 $words2 > gout.42
+cat gout.42
+
+# Find any words with two consequetive letters repeated anywhere else
+# on the line in reverse order, but not next to each other.
+grep -E "[a-zA-Z][a-zA-Z]" $words1 $words2 > gout.46
+cat gout.46
+
+# Find any words with exactly 6 sequential alpha characters.
+#Note: [a-zA-Z] represents all possible letters.
+grep  "\<[a-zA-Z][a-zA-Z][a-zA-Z][a-zA-Z][a-zA-Z][a-zA-Z]\>" $words1 $words2 > gout.48
+cat gout.48
+
+
+diff gout.20 ~user_dir/Grep/gout.20
+
+}
+
+grepit;
